@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Product extends Model
 {
+    /** @phpstan-use HasFactory<ProductFactory> */
     use HasFactory;
 
     /**
@@ -31,13 +34,28 @@ class Product extends Model
         'is_public' => 'boolean',
     ];
 
+    /**
+     * @return BelongsTo<User, Product>
+     */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        /** @var BelongsTo<User, Product> $relation */
+        $relation = $this->belongsTo(User::class);
+
+        return $relation;
     }
 
-    public function scopePublic($query)
+    /**
+     * @param Builder<Product> $query
+     * @return Builder<Product>
+     */
+    public function scopePublic(Builder $query): Builder
     {
         return $query->where('is_public', true);
+    }
+
+    protected static function newFactory(): ProductFactory
+    {
+        return ProductFactory::new();
     }
 }

@@ -57,10 +57,13 @@ class User extends Authenticatable
     ];
 
     /**
-     * A user can publish many products.
+     * @return HasMany<Product, User>
      */
     public function products(): HasMany
     {
-        return $this->hasMany(Product::class);
+        /** @var HasMany<Product, User> $relation */
+        $relation = $this->hasMany(Product::class);
+
+        return $relation;
     }
 }

@@ -6,14 +6,13 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class ProductController extends Controller
 {
-    public function index(Request $request): Response
+    public function index(): Response
     {
         $products = Product::query()
             ->with('user:id,name,avatar_url,x_url,qiita_url,zenn_url,github_url,booklog_url')
@@ -85,7 +84,10 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request): RedirectResponse
     {
-        $product = $request->user()->products()->create($request->validated());
+        /** @var \App\Models\User $user */
+        $user = $request->user();
+
+        $product = $user->products()->create($request->validated());
 
         return redirect()->route('products.show', $product)->with('message', 'プロダクトを投稿しました。');
     }
