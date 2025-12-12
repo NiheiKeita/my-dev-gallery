@@ -117,7 +117,7 @@ const Form: React.FC<Props> = ({ product }) => {
                             id="body_markdown"
                             name="body_markdown"
                             value={data.body_markdown}
-                            className="mt-1 block w-full min-h-[240px]"
+                            className="mt-1 block min-h-[240px] w-full"
                             onChange={(e) => setData('body_markdown', e.target.value)}
                         />
                         <InputError message={errors.body_markdown} className="mt-2" />

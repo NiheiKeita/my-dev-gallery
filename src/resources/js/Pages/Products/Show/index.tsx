@@ -39,7 +39,7 @@ const Show: React.FC<Props> = ({ product, canEdit }) => {
                 </div>
 
                 <div className="grid gap-8 p-6 md:grid-cols-[2fr_1fr] md:p-10">
-                    <div className="markdown-body space-y-4 text-slate-800 leading-relaxed">
+                    <div className="markdown-body space-y-4 leading-relaxed text-slate-800">
                         <ReactMarkdown
                             remarkPlugins={[remarkGfm]}
                             rehypePlugins={[rehypeSanitize]}

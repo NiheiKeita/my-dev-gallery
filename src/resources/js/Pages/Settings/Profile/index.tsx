@@ -56,7 +56,7 @@ const Profile: React.FC<Props> = ({ user }) => {
 
                     <div>
                         <InputLabel htmlFor="bio" value="自己紹介" />
-                        <TextArea id="bio" name="bio" value={data.bio} className="mt-1 block w-full min-h-[140px]" onChange={(e) => setData('bio', e.target.value)} />
+                        <TextArea id="bio" name="bio" value={data.bio} className="mt-1 block min-h-[140px] w-full" onChange={(e) => setData('bio', e.target.value)} />
                         <InputError message={errors.bio} className="mt-2" />
                     </div>
 

@@ -11,7 +11,7 @@ type Props = {
 export const WebLayout = React.memo<Props>(function AdminLayout({
     children,
 }) {
-    const { flash } = usePage<PageProps>()
+    const { props: { flash } } = usePage<PageProps>()
 
     return (
         <>

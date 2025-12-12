@@ -18,8 +18,8 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
             </div>
             <div className="flex flex-1 flex-col gap-3 p-4">
                 <div className="space-y-1">
-                    <h3 className="text-lg font-semibold text-slate-900 line-clamp-2">{product.title}</h3>
-                    <p className="text-sm text-slate-600 line-clamp-2">{product.excerpt}</p>
+                    <h3 className="line-clamp-2 text-lg font-semibold text-slate-900">{product.title}</h3>
+                    <p className="line-clamp-2 text-sm text-slate-600">{product.excerpt}</p>
                 </div>
                 {product.user && (
                     <div className="mt-auto flex items-center gap-3 text-sm text-slate-600">

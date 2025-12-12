@@ -21,7 +21,7 @@ export const Avatar: React.FC<Props> = ({ name, src, size = 'md' }) => {
     }
 
     return (
-        <div className={`${sizeClass} rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 text-white shadow-inner flex items-center justify-center font-semibold`}>
+        <div className={`flex items-center justify-center ${sizeClass} rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 font-semibold text-white shadow-inner`}>
             {initials}
         </div>
     )

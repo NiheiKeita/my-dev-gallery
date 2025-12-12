@@ -5,7 +5,7 @@ import Button from '../Button'
 import { PageProps } from '@/types'
 
 export const WebHeader = React.memo(function WebHeader() {
-    const { auth } = usePage<PageProps>()
+    const { props: { auth } } = usePage<PageProps>()
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     const handleLogout = () => {
@@ -13,7 +13,7 @@ export const WebHeader = React.memo(function WebHeader() {
     }
 
     return (
-        <header className="sticky left-0 top-0 z-50 w-full bg-white/90 backdrop-blur shadow">
+        <header className="sticky left-0 top-0 z-50 w-full bg-white/90 shadow backdrop-blur">
             <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
                 <div className="flex items-center gap-3">
                     <Link href={route('products.index')} className="flex items-center gap-2 text-lg font-semibold tracking-tight text-slate-900">

@@ -12,7 +12,7 @@ type Props = PageProps<{
 }>
 
 const Index: React.FC<Props> = ({ products }) => {
-    const { auth } = usePage<PageProps>()
+    const { props: { auth } } = usePage<PageProps>()
 
     return (
         <WebLayout>
