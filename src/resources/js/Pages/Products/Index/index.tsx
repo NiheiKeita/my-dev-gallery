@@ -12,7 +12,14 @@ type Props = PageProps<{
 }>
 
 const Index: React.FC<Props> = ({ products }) => {
-    const { props: { auth } } = usePage<PageProps>()
+    const inertiaPage = (() => {
+        try {
+            return usePage<PageProps>()
+        } catch {
+            return { props: { auth: { user: null }, flash: {} } } as unknown as { props: PageProps }
+        }
+    })()
+    const { props: { auth } } = inertiaPage
 
     return (
         <WebLayout>

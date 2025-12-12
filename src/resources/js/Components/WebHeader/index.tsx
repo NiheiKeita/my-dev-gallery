@@ -5,7 +5,14 @@ import Button from '../Button'
 import { PageProps } from '@/types'
 
 export const WebHeader = React.memo(function WebHeader() {
-    const { props: { auth } } = usePage<PageProps>()
+    const inertiaPage = (() => {
+        try {
+            return usePage<PageProps>()
+        } catch {
+            return { props: { auth: { user: null }, flash: {} } } as unknown as { props: PageProps }
+        }
+    })()
+    const { props: { auth } } = inertiaPage
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     const handleLogout = () => {

@@ -11,7 +11,14 @@ type Props = {
 export const WebLayout = React.memo<Props>(function AdminLayout({
     children,
 }) {
-    const { props: { flash } } = usePage<PageProps>()
+    const inertiaPage = (() => {
+        try {
+            return usePage<PageProps>()
+        } catch {
+            return { props: { flash: {} } } as unknown as { props: PageProps }
+        }
+    })()
+    const { props: { flash } } = inertiaPage
 
     return (
         <>
