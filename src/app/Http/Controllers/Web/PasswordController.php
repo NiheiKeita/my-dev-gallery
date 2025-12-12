@@ -40,6 +40,6 @@ class PasswordController extends Controller
             'password_updated' => true,
         ]);
         // dd($user);
-        return redirect()->intended(RouteServiceProvider::WEB_PROPERTIES);
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 }

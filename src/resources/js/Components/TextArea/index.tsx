@@ -15,13 +15,12 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, Props>(function Te
         <textarea
             {...props}
             ref={ref}
+            value={value ?? ''}
             className={
                 'border-gray-300 focus:border-indigo-500 focus:ring-theme rounded-md shadow-sm ' +
                 className
             }
-        >
-            {value}
-        </textarea>
+        />
     )
 })
 

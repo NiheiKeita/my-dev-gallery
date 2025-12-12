@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -20,9 +20,19 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'plan_id',
+        'company',
+        'bio',
+        'avatar_url',
+        'x_url',
+        'qiita_url',
+        'zenn_url',
+        'github_url',
+        'booklog_url',
         'password',
         'tel',
         'password_token',
+        'password_updated',
     ];
 
     /**
@@ -43,23 +53,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'password_updated' => 'boolean',
     ];
 
-    protected static function boot()
+    /**
+     * A user can publish many products.
+     */
+    public function products(): HasMany
     {
-        parent::boot();
-
-        static::updated(function ($user) {
-            // プランが変更されたかどうかを確認する
-            if ($user->isDirty('plan_id')) {
-                // プランが変更された場合、ログを保存する
-                DB::table('user_plan_logs')->insert([
-                    'user_id' => $user->id,
-                    'plan_id' => $user->plan_id,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
-        });
+        return $this->hasMany(Product::class);
     }
 }

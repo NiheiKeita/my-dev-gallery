@@ -38,7 +38,7 @@ class LoginController extends Controller
         //     return redirect()->route("web.password.edit", ['token' => $user->password_token]);
         // }
 
-        return redirect()->intended(RouteServiceProvider::WEB_PROPERTIES);
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     /**

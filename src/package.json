@@ -54,6 +54,9 @@
     "glob": "8.1.0"
   },
   "dependencies": {
+    "react-markdown": "^9.0.1",
+    "rehype-sanitize": "^6.0.0",
+    "remark-gfm": "^4.0.0",
     "react-slick": "^0.30.2",
     "slick-carousel": "^1.8.1",
     "ziggy-js": "^2.3.1"

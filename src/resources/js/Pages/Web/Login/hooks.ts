@@ -16,7 +16,7 @@ export const useLogin = () => {
     const submit: FormEventHandler = (e) => {
         e.preventDefault()
 
-        post(route('user.login'))
+        post(route('login'))
     }
     return {
         data, setData, post, processing, errors, reset, submit
