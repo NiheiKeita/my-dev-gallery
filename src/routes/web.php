@@ -1,14 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Web\LoginController;
 use App\Http\Controllers\Web\PasswordController;
 use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,17 +24,31 @@ use App\Http\Middleware\VerifyCsrfToken;
 */
 
 Route::group(['middleware' => 'basicauth'], function () {
-    Route::fallback(function () {
-        return redirect(route('web.top'));
+    Route::fallback(fn () => redirect(route('products.index')));
+
+    // Public pages
+    Route::get('/', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/{product}', [ProductController::class, 'show'])->whereNumber('product')->name('products.show');
+    Route::get('/users/{user}', [ProfileController::class, 'show'])->name('users.show');
+
+    // Authenticated pages
+    Route::middleware('auth')->group(function () {
+        Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+        Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+        Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->whereNumber('product')->name('products.edit');
+        Route::put('/products/{product}', [ProductController::class, 'update'])->whereNumber('product')->name('products.update');
+
+        Route::get('/settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('/settings/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+        Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
     });
 
-    Route::middleware('guest.web')->group(function () {
-        Route::get('password/edit/{token}', [PasswordController::class, 'edit'])->name('web.password.edit');
-        Route::post('password/edit/{token}', [PasswordController::class, 'update'])->name('web.password.update');
-    });
-    Route::get('login', [LoginController::class, 'create'])->name('user.login');
+    // Authentication
+    Route::get('login', [LoginController::class, 'create'])->name('login');
     Route::post('login', [LoginController::class, 'store']);
-
+    Route::get('password/edit/{token}', [PasswordController::class, 'edit'])->name('web.password.edit');
+    Route::post('password/edit/{token}', [PasswordController::class, 'update'])->name('web.password.update');
 
     //管理画面側
     Route::get('admin/login', [AdminLoginController::class, 'index'])->name('admin.login');

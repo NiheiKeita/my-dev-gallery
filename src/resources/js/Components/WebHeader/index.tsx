@@ -1,65 +1,69 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
+import { Link, router, usePage } from '@inertiajs/react'
 import Button from '../Button'
-import { router, usePage } from '@inertiajs/react'
+import { PageProps } from '@/types'
 
-type Props = {
-    page?: "rental" | "ma",
-}
-export const WebHeader = React.memo<Props>(function WebHeader({
-    page
-}) {
-    const [isVisible, setIsVisible] = useState(true)
-    const [lastScrollY, setLastScrollY] = useState(0)
+export const WebHeader = React.memo(function WebHeader() {
+    const inertiaPage = (() => {
+        try {
+            return usePage<PageProps>()
+        } catch {
+            return { props: { auth: { user: null }, flash: {} } } as unknown as { props: PageProps }
+        }
+    })()
+    const { props: { auth } } = inertiaPage
     const [isMenuOpen, setIsMenuOpen] = useState(false)
-    const handleScroll = () => {
-        if (typeof window !== 'undefined') {
-            const currentScrollY = window.scrollY
-            setIsVisible(currentScrollY < lastScrollY || currentScrollY < 50)
-            setLastScrollY(currentScrollY)
-        }
+
+    const handleLogout = () => {
+        router.post(route('logout'))
     }
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll)
-        return () => {
-            window.removeEventListener('scroll', handleScroll)
-        }
-    }, [lastScrollY])
 
     return (
-        <header className={`sticky left-0 top-0 z-50 w-full bg-white shadow transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
-            <div className="mx-auto flex items-center justify-between p-4">
-                <div className="flex items-center" >
-                    <div className='cursor-pointer' onClick={() => router.visit(route('web.top'))}>
-                        <img src="/img/logo.png" alt="Logo" className="h-8" />
-                    </div>
-                    <div className="ms-6 hidden justify-start space-x-4 md:flex">
-                        <div className={`cursor-pointer`} onClick={() => { }}>メニュー１</div>
-                        <div className={`cursor-pointer`} onClick={() => { }}>メニュー２</div>
-                    </div>
+        <header className="sticky left-0 top-0 z-50 w-full bg-white/90 shadow backdrop-blur">
+            <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+                <div className="flex items-center gap-3">
+                    <Link href={route('products.index')} className="flex items-center gap-2 text-lg font-semibold tracking-tight text-slate-900">
+                        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-indigo-500 to-cyan-400 text-white shadow">DG</span>
+                        <span>My Dev Gallery</span>
+                    </Link>
                 </div>
+                <nav className="hidden items-center gap-4 text-sm font-medium text-slate-700 md:flex">
+                    <Link href={route('products.index')} className="hover:text-indigo-600">一覧</Link>
+                    {auth.user && (
+                        <>
+                            <Link href={route('products.create')} className="hover:text-indigo-600">投稿する</Link>
+                            <Link href={route('users.show', auth.user.id)} className="hover:text-indigo-600">マイページ</Link>
+                        </>
+                    )}
+                </nav>
                 <div className="flex items-center gap-2">
-                    <Button className='ms-8' variant='blue' onClick={() => router.visit(route("user.login"))}>ログイン</Button>
-
+                    {auth.user ? (
+                        <Button variant="blue" onClick={handleLogout}>ログアウト</Button>
+                    ) : (
+                        <Button variant="blue" onClick={() => router.visit(route('login'))}>ログイン</Button>
+                    )}
                     <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="ml-2 md:hidden">
-                        {isMenuOpen ? (
-                            <span className="block h-6 w-6 text-gray-700">✖</span>
-                        ) : (
-                            <span className="block h-auto w-6 text-gray-700">
-                                <span className="mb-1 block h-0.5 w-6 bg-gray-700"></span>
-                                <span className="mb-1 block h-0.5 w-6 bg-gray-700"></span>
-                                <span className="block h-0.5 w-6 bg-gray-700"></span>
-                            </span>
-                        )}
+                        <span className="block h-0.5 w-6 bg-gray-700"></span>
+                        <span className="my-1 block h-0.5 w-6 bg-gray-700"></span>
+                        <span className="block h-0.5 w-6 bg-gray-700"></span>
                     </button>
                 </div>
-            </div >
-            {/* ハンバーガーメニュー */}
-            < nav className={`fixed left-0 top-16 flex w-full flex-col space-y-2 bg-white p-4 shadow-md ${isMenuOpen ? 'block' : 'hidden'}`}>
-                <button className={`text-gray-700 hover:text-blue-500 `} onClick={() => { }}>メニュー１</button>
-                <button className={`text-gray-700 hover:text-blue-500 `} onClick={() => { }}>メニュー２</button>
-            </nav >
-        </header >
+            </div>
+            <nav className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'} border-t bg-white px-4 pb-4 pt-2 text-sm font-medium text-slate-700`}>
+                <Link href={route('products.index')} className="block py-2" onClick={() => setIsMenuOpen(false)}>一覧</Link>
+                {auth.user && (
+                    <>
+                        <Link href={route('products.create')} className="block py-2" onClick={() => setIsMenuOpen(false)}>投稿する</Link>
+                        <Link href={route('users.show', auth.user.id)} className="block py-2" onClick={() => setIsMenuOpen(false)}>マイページ</Link>
+                        <button className="mt-2 rounded-md bg-slate-900 px-3 py-2 text-left text-white" onClick={handleLogout}>ログアウト</button>
+                    </>
+                )}
+                {!auth.user && (
+                    <Link href={route('login')} className="block py-2" onClick={() => setIsMenuOpen(false)}>ログイン</Link>
+                )}
+            </nav>
+        </header>
     )
 })
 export default WebHeader

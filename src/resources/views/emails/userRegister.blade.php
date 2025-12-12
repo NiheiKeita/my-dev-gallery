@@ -11,6 +11,6 @@
     <p><strong>パスワード:</strong> {{ $password }}</p>
     <br/>
     <p>下記のリンクからログインし、パスワードを変更してください。</p>
-    <p><strong>ログインURL:</strong> <a href="{{ route('user.login') }}">{{ route('user.login') }}</a></p>
+    <p><strong>ログインURL:</strong> <a href="{{ route('login') }}">{{ route('login') }}</a></p>
 </body>
 </html>

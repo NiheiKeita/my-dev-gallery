@@ -9,9 +9,9 @@ export const FlashMessage = React.memo<Props>(function FlashMessage({
     children,
 }) {
     return (
-        < div className="rounded border border-green-400 bg-green-100 px-4 py-3 text-green-700" role="alert" >
+        <div className="rounded border border-green-400 bg-green-100 px-4 py-3 text-green-700" role="alert">
             <span className="block sm:inline">{children}</span>
-        </div >
+        </div>
     )
 })
 export default FlashMessage
